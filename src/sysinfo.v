@@ -6,8 +6,6 @@ fn init() {
 	if os.user_os() != "linux" {
 		panic("sysinfo is not supported on OS '${os.user_os()}'")
 	}
-
-	test()
 }
 
 // Internal test function that prints out the results of all the sysinfo functions
