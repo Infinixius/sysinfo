@@ -95,6 +95,95 @@ fn get_lscpu_value(name string) string {
 	panic("failed to get lscpu value '${name}'")
 }
 
+pub struct SystemInfo {
+	arch string
+	cpu_count int
+	cpu_model string
+	cpu_speed int
+	cpu_temp int
+	cpu_usage int
+	disk_usage []Disk
+	loadavg []f32
+	network_interfaces []NetworkInterface
+	memory_total int
+	memory_free int
+	memory_available int
+	processes []Process
+	uname os.Uname
+	uptime int
+}
+
+// Returns a SystemInfo struct with all the information about the system
+pub fn get_system_info() SystemInfo {
+	varch := arch() or { panic("failed to get arch") }
+	vcpu_count := cpu_count() or { panic("failed to get cpu_count") }
+	vcpu_model := cpu_model() or { panic("failed to get cpu_model") }
+	vcpu_speed := cpu_speed() or { panic("failed to get cpu_speed") }
+	vcpu_temp := cpu_temp() or { panic("failed to get cpu_temp") }
+	vcpu_usage := cpu_usage()
+	vdisk_usage := disk_usage()
+	vloadavg := loadavg() or { panic("failed to get loadavg") }
+	vnetwork_interfaces := network_interfaces() or { panic("failed to get network_interfaces") }
+	vmemory_total := memory_total() or { panic("failed to get memory_total") }
+	vmemory_free := memory_free() or { panic("failed to get memory_free") }
+	vmemory_available := memory_available() or { panic("failed to get memory_available") }
+	vprocesses := processes()
+	vuname := uname()
+	vuptime := uptime() or { panic("failed to get uptime") }
+
+	return SystemInfo {
+		arch: varch,
+		cpu_count: vcpu_count,
+		cpu_model: vcpu_model,
+		cpu_speed: vcpu_speed,
+		cpu_temp: vcpu_temp,
+		cpu_usage: vcpu_usage,
+		disk_usage: vdisk_usage,
+		loadavg: vloadavg,
+		network_interfaces: vnetwork_interfaces,
+		memory_total: vmemory_total,
+		memory_free: vmemory_free,
+		memory_available: vmemory_available,
+		processes: vprocesses,
+		uname: vuname,
+		uptime: vuptime,
+	}
+}
+
+pub struct SimpleSystemInfo {
+	cpu_count int
+	cpu_speed int
+	cpu_temp int
+	cpu_usage int
+	memory_total int
+	memory_free int
+	memory_available int
+	uptime int
+}
+
+// Returns a SimpleSystemInfo struct with only live important information about the system
+pub fn get_simple_system_info() SimpleSystemInfo {
+	vcpu_count := cpu_count() or { panic("failed to get cpu_count") }
+	vcpu_speed := cpu_speed() or { panic("failed to get cpu_speed") }
+	vcpu_temp := cpu_temp() or { panic("failed to get cpu_temp") }
+	vcpu_usage := cpu_usage()
+	vmemory_total := memory_total() or { panic("failed to get memory_total") }
+	vmemory_free := memory_free() or { panic("failed to get memory_free") }
+	vmemory_available := memory_available() or { panic("failed to get memory_available") }
+	vuptime := uptime() or { panic("failed to get uptime") }
+
+	return SimpleSystemInfo {
+		cpu_count: vcpu_count,
+		cpu_speed: vcpu_speed,
+		cpu_temp: vcpu_temp,
+		cpu_usage: vcpu_usage,
+		memory_total: vmemory_total,
+		memory_free: vmemory_free,
+		memory_available: vmemory_available,
+		uptime: vuptime,
+	}
+}
+
 // Returns the architecture of the system as returned by lscpu
 pub fn arch() !string {
 	return get_lscpu_value("Architecture")
