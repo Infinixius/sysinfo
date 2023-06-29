@@ -96,6 +96,7 @@ fn get_lscpu_value(name string) string {
 }
 
 pub struct SystemInfo {
+	pub:
 	arch string
 	cpu_count int
 	cpu_model string
@@ -151,6 +152,7 @@ pub fn get_system_info() SystemInfo {
 }
 
 pub struct SimpleSystemInfo {
+	pub:
 	cpu_count int
 	cpu_speed int
 	cpu_temp int
@@ -224,6 +226,7 @@ pub fn cpu_usage() int {
 }
 
 pub struct Disk {
+	pub:
 	name string
 	mountpoint string
 	size int
@@ -278,6 +281,7 @@ pub fn loadavg() ![]f32 {
 }
 
 pub struct NetworkInterface {
+	pub:
 	name string
 	ip string
 	bytes int
@@ -327,6 +331,7 @@ pub fn memory_available() !int {
 }
 
 struct Process {
+	pub:
 	pid int
 	user string
 	cpu f32
