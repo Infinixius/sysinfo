@@ -7,7 +7,7 @@ this is a module for the [V programming language](https://vlang.io/) that makes 
 
 import infinixius.sysinfo
 
-println(get_simple_system_info())
+println(sysinfo.get_simple_system_info())
 // simple_sysinfo: SimpleSystemInfo{
 //     cpu_count: 16
 //     cpu_speed: 4679
