@@ -80,7 +80,7 @@ fn test() {
 
 // Internal function that gets a value from lscpu
 fn get_lscpu_value(name string) string {
-	lscpu := os.execute("lscpu")
+	lscpu := os.execute("LANG=C lscpu")
 
 	if lscpu.exit_code != 0 {
 		panic("could not run lscpu; error: " + lscpu.output)
@@ -216,7 +216,7 @@ pub fn cpu_temp() !int {
 // Returns CPU usage as a percentage (from 0-100) from vmstat.
 // Will suspend for one second, as vmstat is run twice with a one second delay
 pub fn cpu_usage() int {
-    result := os.execute("echo $[100-$(vmstat 1 2|tail -1|awk '{print $15}')]")
+    result := os.execute("echo $[100-$(LANG=C vmstat 1 2|tail -1|awk '{print $15}')]")
 
 	if result.exit_code != 0 {
 		panic("failed to get cpu_usage; error: " + result.output)
@@ -236,7 +236,7 @@ pub struct Disk {
 }
 
 pub fn disk_usage() []Disk {
-	result := os.execute("df")
+	result := os.execute("LANG=C df")
 	mut disks := []Disk{}
 
 	if result.exit_code != 0 {
@@ -294,7 +294,7 @@ pub fn network_interfaces() ![]NetworkInterface {
 	for name in result {
 		if name == "lo" { continue }
 
-		ip := os.execute("ip addr show ${name} | grep 'inet ' | awk '{print $2}' | cut -d/ -f1").output.trim_space()
+		ip := os.execute("LANG=C ip addr show ${name} | grep 'inet ' | awk '{print $2}' | cut -d/ -f1").output.trim_space()
 		if ip == "" { continue }
 
 		bytes := os.read_file("/sys/class/net/${name}/statistics/rx_bytes")!
@@ -340,7 +340,7 @@ struct Process {
 }
 
 pub fn processes() []Process {
-	result := os.execute("ps aux")
+	result := os.execute("LANG=C ps aux")
 	mut processes := []Process{}
 
 	if result.exit_code != 0 {
