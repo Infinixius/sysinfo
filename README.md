@@ -53,6 +53,7 @@ memory_total() int
 memory_free() int
 memory_available() int
 processes() []Process
+release() string
 uname() os.Uname
 uptime() int
 
