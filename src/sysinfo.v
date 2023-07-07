@@ -1,4 +1,4 @@
-module main
+module sysinfo
 
 import os
 
