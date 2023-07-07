@@ -1,4 +1,4 @@
-module sysinfo
+module main
 
 import os
 
@@ -68,6 +68,11 @@ fn test() {
 
 	print("processes: ")
 	println(processes().len)
+
+	print("release: ")
+	println(release() or {
+		panic("failed to get release")
+	})
 
 	print("uname: ")
 	println(uname())
@@ -371,6 +376,19 @@ pub fn processes() []Process {
 	}
 
 	return processes
+}
+
+// Returns the OS name as returned by /etc/os-release
+pub fn release() !string {
+	result := os.read_file("/etc/os-release")!
+
+	for line in result.split('\n') {
+		if line.starts_with("PRETTY_NAME=") {
+			return line.split('=')[1].trim_space().replace("\"", "")
+		}
+	}
+
+	return "N/A"
 }
 
 // Return os.uname() for completeness

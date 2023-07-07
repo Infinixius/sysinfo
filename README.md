@@ -27,6 +27,7 @@ you should also note that this module is reliant on some specific files and exec
 - `lscpu`
 - `ps`
 - `vmstat`
+- `/etc/os-release`
 - `/proc/loadavg`
 - `/proc/meminfo`
 - `/proc/stat`
